@@ -1,0 +1,3 @@
+rootProject.name='GlideAnimationWebp'
+include ':app'
+include ':lib'
