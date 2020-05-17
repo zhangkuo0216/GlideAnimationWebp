@@ -63,6 +63,7 @@ public class ANMFChunk extends BaseChunk {
 
     byte flags;
 
+
     /**
      * Blending method (B): 1 bit
      * Indicates how transparent pixels of the current frame are to be blended with corresponding pixels of the previous canvas:
@@ -117,10 +118,10 @@ public class ANMFChunk extends BaseChunk {
     }
 
     public boolean blendingMethod() {
-        return (flags & FLAG_BLENDING_METHOD) == FLAG_BLENDING_METHOD;
+        return (flags & FLAG_BLENDING_METHOD) == 0;
     }
 
     public boolean disposalMethod() {
-        return (flags & FLAG_DISPOSAL_METHOD) == FLAG_DISPOSAL_METHOD;
+        return (flags & FLAG_DISPOSAL_METHOD) != 0;
     }
 }

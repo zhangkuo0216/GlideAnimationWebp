@@ -1,7 +1,6 @@
 package com.moji.glide.webp.glide;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -14,12 +13,7 @@ import com.bumptech.glide.gifdecoder.GifDecoder;
 import com.bumptech.glide.gifdecoder.GifHeader;
 import com.moji.glide.webp.WebpFrameInfo;
 import com.moji.glide.webp.WebpImage;
-import com.moji.glide.webp.io.WebPWriter;
-import com.moji.glide.webp.parser.BaseChunk;
-import com.moji.glide.webp.parser.VP8XChunk;
 
-
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 
@@ -51,6 +45,7 @@ public class WebpDecoder implements GifDecoder {
     // 动画每一帧渲染后的Bitmap缓存
     private final LruCache<Integer, Bitmap> mFrameBitmapCache;
 
+    private int temp = 1;
 
     public WebpDecoder(GifDecoder.BitmapProvider provider,
                        WebpImage webPImage,
@@ -60,6 +55,7 @@ public class WebpDecoder implements GifDecoder {
         mBitmapProvider = provider;
         mWebPImage = webPImage;
         mFrameDurations = webPImage.getFrameDurations();
+        mCacheStrategy = webpFrameCacheStrategy;
 
         mTransparentFillPaint = new Paint();
         mTransparentFillPaint.setColor(Color.TRANSPARENT);
@@ -165,6 +161,7 @@ public class WebpDecoder implements GifDecoder {
 
     @Override
     public int getByteSize() {
+        //todo 应该计算所有帧的大小
         return rawData.limit();
     }
 
@@ -225,7 +222,7 @@ public class WebpDecoder implements GifDecoder {
                         + ", dispose=" + frameInfo.isDisposeBackgroundColor());
             }
 
-            if (frameInfo.isBlendPreviousFrame()) {
+            if (frameInfo.isDisposeBackgroundColor()) {
                 disposeToBackground(canvas, frameInfo);
             }
         }
