@@ -40,6 +40,7 @@ public class WebpDecoder implements GifDecoder {
     private final Paint mTransparentFillPaint;
 
     private WebpFrameCacheStrategy mCacheStrategy;
+    private WebpFramePlayStrategy mPlayStrategy;
 
     private Bitmap.Config mBitmapConfig = Bitmap.Config.ARGB_8888;
     // 动画每一帧渲染后的Bitmap缓存
@@ -51,11 +52,13 @@ public class WebpDecoder implements GifDecoder {
                        WebpImage webPImage,
                        ByteBuffer rawData,
                        WebpFrameCacheStrategy webpFrameCacheStrategy,
+                       WebpFramePlayStrategy webpFramePlayStrategy,
                        int sampleSize) {
         mBitmapProvider = provider;
         mWebPImage = webPImage;
         mFrameDurations = webPImage.getFrameDurations();
         mCacheStrategy = webpFrameCacheStrategy;
+        mPlayStrategy = webpFramePlayStrategy;
 
         mTransparentFillPaint = new Paint();
         mTransparentFillPaint.setColor(Color.TRANSPARENT);
@@ -105,7 +108,7 @@ public class WebpDecoder implements GifDecoder {
 
     @Override
     public void advance() {
-        mFramePointer = (mFramePointer + 1) % mWebPImage.getFrameCount();
+        mFramePointer = mPlayStrategy.getNextFrameIndex(getFrameCount());
     }
 
     @Override

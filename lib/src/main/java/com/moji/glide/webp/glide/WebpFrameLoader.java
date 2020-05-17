@@ -37,9 +37,6 @@ import static com.bumptech.glide.request.RequestOptions.signatureOf;
 
 public class WebpFrameLoader {
 
-    public static final Option<WebpFrameCacheStrategy> FRAME_CACHE_STRATEGY = Option.memory(
-            "com.mjglide.webp.decode.WebpFrameLoader.CacheStrategy", WebpFrameCacheStrategy.AUTO);
-
     private final GifDecoder gifDecoder;
     private final Handler handler;
     private final List<FrameCallback> callbacks = new ArrayList<>();
